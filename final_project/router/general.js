@@ -51,9 +51,14 @@ public_users.get('/isbn/:isbn',function (req, res) {
 
 //Get book details asynchronously based on ISBN
  public_users.get('/isbna/:isbn',async function (req, res) {
-    const response = await axios.get(`http://localhost:5000/isbn/${req.params.isbn}`);
-    res.send(response.data);
- });
+    try {
+        const response = await axios.get(`http://localhost:5000/isbn/${req.params.isbn}`);
+        res.send(response.data);
+    }
+    catch (err) {
+        res.send(err);
+    }
+    });
 
   
 // Get book details based on author
@@ -77,9 +82,15 @@ public_users.get('/author/:author',function (req, res) {
     }
 });
 
+//Get book details based on author asynchronously
 public_users.get('/authora/:author',async (req, res) =>{
-    const response = await axios.get(`http://localhost:5000/author/${req.params.author}`);
-    res.send(response.data);
+    try {
+        const response = await axios.get(`http://localhost:5000/author/${req.params.author}`);
+        res.send(response.data);
+    }
+    catch (err) {
+        res.send(err);
+    }
 });
 
 // Get all books based on title
@@ -99,9 +110,15 @@ public_users.get('/title/:title',function (req, res) {
     }
 });
 
-public_users.get('/titlea/:title',async (req, res) =>{
-    const response = await axios.get(`http://localhost:5000/title/${req.params.title}`);
-    res.send(response.data);
+//Get all book based on title asynchoronusly
+public_users.get('/titlea/:title',async (req, res) => {
+    try {
+        const response = await axios.get(`http://localhost:5000/title/${req.params.title}`);
+        res.send(response.data);
+    }
+    catch (err) {
+        res.send(err);
+    }
 });
 
 //  Get book review
