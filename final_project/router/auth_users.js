@@ -42,7 +42,11 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
     if (!book) return res.status(404).send("No book found");
     if (!review) return res.status(404).send("Review must be written");
     book.reviews[req.session.authorization.username] = review;
-    res.send("Review successfully posted");
+    res.status(200).json({
+  message: "Review added/updated successfully",
+  reviews: book.reviews
+});
+
 });
 
 regd_users.delete("/auth/review/:isbn", (req, res) => {
