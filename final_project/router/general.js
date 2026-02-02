@@ -1,9 +1,9 @@
 const express = require('express');
+const axios = require('axios');
 let books = require("./booksdb.js");
 let isValid = require("./auth_users.js").isValid;
 let users = require("./auth_users.js").users;
 const public_users = express.Router();
-
 
 public_users.post("/register", (req,res) => {
     const username = req.body.username;
@@ -27,9 +27,16 @@ public_users.post("/register", (req,res) => {
 });
 
 // Get the book list available in the shop
-public_users.get('/',function (req, res) {
-  res.send(JSON.stringify(books,null,4));
+public_users.get('/', async (req, res) => {
+    res.json(books);
 });
+
+//Get the book list asynchronously in the shop
+public_users.get('/book', async (req, res) => {
+    const response = await axios.get("http://localhost:5000/");
+    res.json(response.data);
+});
+  
 
 // Get book details based on ISBN
 public_users.get('/isbn/:isbn',function (req, res) {
@@ -41,6 +48,13 @@ public_users.get('/isbn/:isbn',function (req, res) {
         res.status(404).send("There is an error with your request");
     }
  });
+
+//Get book details asynchronously based on ISBN
+ public_users.get('/isbna/:isbn',async function (req, res) {
+    const response = await axios.get(`http://localhost:5000/isbn/${req.params.isbn}`);
+    res.send(response.data);
+ });
+
   
 // Get book details based on author
 public_users.get('/author/:author',function (req, res) {
@@ -63,6 +77,11 @@ public_users.get('/author/:author',function (req, res) {
     }
 });
 
+public_users.get('/authora/:author',async (req, res) =>{
+    const response = await axios.get(`http://localhost:5000/author/${req.params.author}`);
+    res.send(response.data);
+});
+
 // Get all books based on title
 public_users.get('/title/:title',function (req, res) {
     const title = req.params.title;
@@ -78,6 +97,11 @@ public_users.get('/title/:title',function (req, res) {
             res.status(404).send("No book has been found");
         }
     }
+});
+
+public_users.get('/titlea/:title',async (req, res) =>{
+    const response = await axios.get(`http://localhost:5000/title/${req.params.title}`);
+    res.send(response.data);
 });
 
 //  Get book review
